@@ -1,0 +1,6 @@
+@CSW431_PhamTranGiaHung_2331200153_lab3_HostAddress = http://localhost:5236
+
+GET {{CSW431_PhamTranGiaHung_2331200153_lab3_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
