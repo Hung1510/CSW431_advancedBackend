@@ -5,9 +5,7 @@ namespace LibraryAPI.Data
 {
     public class LibraryContext : DbContext
     {
-        public LibraryContext(DbContextOptions<LibraryContext> options) : base(options)
-        {
-        }
+        public LibraryContext(DbContextOptions<LibraryContext> options) : base(options){}
 
         public DbSet<Book> Books { get; set; }
         public DbSet<User> Users { get; set; }
@@ -20,23 +18,17 @@ namespace LibraryAPI.Data
             //index
             modelBuilder.Entity<Book>()
                 .HasIndex(b => b.Title);
-
             modelBuilder.Entity<Book>()
                 .HasIndex(b => b.ISBN);
-
             modelBuilder.Entity<Book>()
                 .HasIndex(b => b.Author);
-
             modelBuilder.Entity<Book>()
                 .HasIndex(b => b.Genre);
-
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
-
             modelBuilder.Entity<Borrowing>()
                 .HasIndex(b => b.Status);
-
             modelBuilder.Entity<Borrowing>()
                 .HasIndex(b => b.BorrowedDate);
 
@@ -46,13 +38,11 @@ namespace LibraryAPI.Data
                 .WithMany(b => b.Borrowings)
                 .HasForeignKey(b => b.BookId)
                 .OnDelete(DeleteBehavior.Restrict);
-
             modelBuilder.Entity<Borrowing>()
                 .HasOne(b => b.User)
                 .WithMany(u => u.Borrowings)
                 .HasForeignKey(b => b.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
-
             SeedData(modelBuilder);
         }
 
@@ -67,14 +57,14 @@ namespace LibraryAPI.Data
             string[] genres = { "book A", "book B", "book C", "book D", "book E", "book F", "book G", "book H", "book I", "book K" };
             string[] authors = { "guy A", "guy B", "guy C", "guy D", "guy E", "guy F", "guy G", "guy H", "guy I", "guy K" };
 
-            for (int i = 1; i <= 500; i++)
+            for (int i = 1; i <= 250; i++)
             {
                 books.Add(new Book
                 {
                     Id = i,
                     Title = $"Book Title {i}",
                     Author = authors[random.Next(authors.Length)],
-                    ISBN = $"978-{random.Next(1000000000, 1999999999)}",
+                    ISBN = $"978-{random.Next(10000000, 99999999)}",
                     PublishedDate = DateTime.Now.AddYears(-random.Next(1, 50)),
                     Genre = genres[random.Next(genres.Length)],
                     TotalCopies = random.Next(5, 20),
@@ -85,7 +75,7 @@ namespace LibraryAPI.Data
             }
 
             //User
-            for (int i = 1; i <= 200; i++)
+            for (int i = 1; i <= 100; i++)
             {
                 users.Add(new User
                 {
@@ -101,7 +91,7 @@ namespace LibraryAPI.Data
 
             //Borrowings
             string[] statuses = {"Borrowed", "Returned", "Overdue" };
-            for (int i = 1; i <= 1000; i++)
+            for (int i = 1; i <= 500; i++)
             {
                 var borrowedDate = DateTime.Now.AddDays(-random.Next(1, 365));
                 var dueDate = borrowedDate.AddDays(14);
